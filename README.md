@@ -20,10 +20,10 @@ Messenger::on('name change', function($name) {
 pass in named functions instead of anonymous ones.
 
 ```
-Messenger::on('name change', $greeting)
+Messenger::on('name change', $greeting);
 
 function greeting($name) {
-    print 'How are you today, ' . $name
+    print 'How are you today, ' . $name;
 }
 ```
 
