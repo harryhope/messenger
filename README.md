@@ -8,7 +8,7 @@ A straightforward php publish/subscribe library.
 Messenger lets you subscribe to functions and then trigger them when messages
 are sent from other parts of your application.
 
-To subscribe:
+- To subscribe:
 
 ```
 Messenger::on('name change', function($name) {
@@ -16,7 +16,7 @@ Messenger::on('name change', function($name) {
 });
 ```
 
-You can have as many subscriptions to a given message as you like, and you can
+- You can have as many subscriptions to a given message as you like, and you can
 pass in named functions instead of anonymous ones.
 
 ```
@@ -27,7 +27,7 @@ function greeting($name) {
 }
 ```
 
-You can unsubscribe to a specific message + named callback combination, or to
+- You can unsubscribe to a specific message + named callback combination, or to
 all messages of a given message name by calling the off method without the
 second parameter.
 
@@ -39,7 +39,7 @@ Messenger::off('name change', $greeting);
 Messenger::off('name change');
 ```
 
-To send a message and have it trigger associated functions, use the send
+- To send a message and have it trigger associated functions, use the send
 method.
 
 ```
