@@ -20,11 +20,12 @@ Messenger::on('name change', function($name) {
 pass in named functions instead of anonymous ones.
 
 ```
-Messenger::on('name change', $greeting);
-
-function greeting($name) {
+$greeting = function($name) {
     print 'How are you today, ' . $name;
 }
+
+Messenger::on('name change', $greeting);
+
 ```
 
 - You can unsubscribe to a specific message + named callback combination, or to
