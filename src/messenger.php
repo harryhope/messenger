@@ -16,8 +16,10 @@ class Messenger {
      *    The name of the subscription to add.
      * @param Closure Object $callback
      *    A callable function.
+     * @return Messenger $this
+     *     Returns the current instance for method chaining.
      */
-    public static function on($message, $callback) {
+    public function on($message, $callback) {
 
         // Error Handling:
         // Make sure $message is a string and $callback is a callable function.
@@ -32,6 +34,8 @@ class Messenger {
             'message' => $message,
             'callback' => $callback
         );
+
+        return $this;
     }
 
     /**
@@ -42,8 +46,10 @@ class Messenger {
      *    The name of the subscription to remove.
      * @param Closure Object $callback
      *    The (optional) specific function to remove.
+     * @return Messenger $this
+     *     Returns the current instance for method chaining.
      */
-    public static function off($message, $callback = null) {
+    public function off($message, $callback = null) {
 
         // Error Handling:
         // Make sure $message is a string.
@@ -60,8 +66,9 @@ class Messenger {
 
                 unset(self::$subscriptions[$key]);
             }
-
         }
+
+        return $this;
     }
 
     /**
@@ -71,12 +78,10 @@ class Messenger {
      *     The name of the subscription to trigger.
      * @param $data
      *     The data to pass to the callback.
-     * @return Boolean $called
-     *     Returns true or false depending on if at least one callback was triggered.
+     * @return Messenger $this
+     *     Returns the current instance for method chaining.
      */
-    public static function send($message, $data) {
-
-        $called = false;
+    public function send($message, $data) {
 
         // Error Handling:
         // Make sure $message is a string.
@@ -92,11 +97,55 @@ class Messenger {
                 // Call the function, if possible, and set our return value to true.
                 if (is_callable($callback)) {
                     $callback($data);
-                    $called = true;
                 }
             }
         }
 
-        return $called;
+        return $this;
     }
+
+    /**
+     * A static version of on()
+     *
+     * @param String $message
+     *    The name of the subscription to add.
+     * @param Closure Object $callback
+     *    A callable function.
+     * @return Messenger
+     *     Returns a new instance of Messenger.
+     */
+    public static on($message, $callback) {
+        $messenger = new Messenger;
+        return $messenger->on($message, $callback);
+    }
+    
+   /**
+    * A static version of off()
+    *
+    * @param String $message
+    *    The name of the subscription to remove.
+    * @param Closure Object $callback
+    *    The (optional) specific function to remove.
+    * @return Messenger
+    *     Returns a new instance of Messenger.
+    */
+   public static off($message, $callback = null) {
+       $messenger = new Messenger;
+       return $messenger->off($message, $callback);
+   }
+
+   /**
+    * A static version of send()
+    *
+    * @param String $message
+    *     The name of the subscription to trigger.
+    * @param $data
+    *     The data to pass to the callback.
+    * @return Messenger
+    *     Returns a new instance of Messenger.
+    */
+   public static send($message, $data) {
+       $messenger = new Messenger;
+       return $messenger->send($message, $data);
+   }
 }
