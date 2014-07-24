@@ -14,20 +14,17 @@ class Messenger {
      *
      * @param String $message
      *    The name of the subscription to add.
-     * @param Closure Object $callback
+     * @param Callable $callback
      *    A callable function.
      * @return Messenger $this
      *     Returns the current instance for method chaining.
      */
-    public function on($message, $callback) {
+    public function on($message, callable $callback) {
 
         // Error Handling:
         // Make sure $message is a string and $callback is a callable function.
         if (!is_string($message))
             throw new InvalidArgumentException('First parameter of Messenger::on must be a string.');
-
-        if (!is_callable($callback))
-            throw new InvalidArgumentException('Second parameter of Messenger::on must be a callable function.');
 
         // Add (or replace) a subscription entry.
         self::$subscriptions[] = (object) array(
@@ -44,12 +41,12 @@ class Messenger {
      *
      * @param String $message
      *    The name of the subscription to remove.
-     * @param Closure Object $callback
+     * @param Callable $callback
      *    The (optional) specific function to remove.
      * @return Messenger $this
      *     Returns the current instance for method chaining.
      */
-    public function off($message, $callback = null) {
+    public function off($message,callable $callback = null) {
 
         // Error Handling:
         // Make sure $message is a string.
@@ -76,7 +73,7 @@ class Messenger {
      *
      * @param String $message
      *     The name of the subscription to trigger.
-     * @param $data
+     * @param Mixed $data
      *     The data to pass to the callback.
      * @return Messenger $this
      *     Returns the current instance for method chaining.
