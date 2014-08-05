@@ -22,7 +22,7 @@ pass in named functions instead of anonymous ones.
 ```
 $greeting = function($name) {
     print 'How are you today, ' . $name;
-}
+};
 
 Messenger::on('name change', $greeting);
 
