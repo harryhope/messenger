@@ -4,7 +4,7 @@
  * A straightforward php publish/subscribe library.
  * (c) Harry Hope 2014
  */
-class Messenger {
+class Message {
 
     // An array of callable functions.
     private static $subscriptions = array();
@@ -19,7 +19,7 @@ class Messenger {
      * @return Messenger $this
      *     Returns the current instance for method chaining.
      */
-    public function on($message, callable $callback) {
+    public function on($message, $callback) {
 
         // Error Handling:
         // Make sure $message is a string and $callback is a callable function.
@@ -46,7 +46,7 @@ class Messenger {
      * @return Messenger $this
      *     Returns the current instance for method chaining.
      */
-    public function off($message,callable $callback = null) {
+    public function off($message, $callback = null) {
 
         // Error Handling:
         // Make sure $message is a string.
@@ -100,6 +100,9 @@ class Messenger {
 
         return $this;
     }
+}
+
+class Messenger {
 
     /**
      * A static version of on()
@@ -111,11 +114,11 @@ class Messenger {
      * @return Messenger
      *     Returns a new instance of Messenger.
      */
-    public static on($message, $callback) {
-        $messenger = new Messenger;
+    public static function on($message, $callback) {
+        $messenger = new Message;
         return $messenger->on($message, $callback);
     }
-    
+
    /**
     * A static version of off()
     *
@@ -126,8 +129,8 @@ class Messenger {
     * @return Messenger
     *     Returns a new instance of Messenger.
     */
-   public static off($message, $callback = null) {
-       $messenger = new Messenger;
+   public static function off($message, $callback = null) {
+       $messenger = new Message;
        return $messenger->off($message, $callback);
    }
 
@@ -141,8 +144,8 @@ class Messenger {
     * @return Messenger
     *     Returns a new instance of Messenger.
     */
-   public static send($message, $data) {
-       $messenger = new Messenger;
+   public static function send($message, $data) {
+       $messenger = new Message;
        return $messenger->send($message, $data);
    }
 }
