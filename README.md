@@ -46,3 +46,11 @@ method.
 ```
 Messenger::send('name change', 'Dave');
 ```
+
+- Messenger also allows for method chaining:
+```
+Messenger::on('name change', $change_name)->on('day change', $change_day);
+
+Messenger::send('name change', 'Dave')
+         ->send('day change', 'Tuesday');
+```

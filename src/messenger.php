@@ -4,7 +4,7 @@
  * A straightforward php publish/subscribe library.
  * (c) Harry Hope 2014
  */
-class Message {
+class Messenger {
 
     // An array of callable functions.
     private static $subscriptions = array();
@@ -19,12 +19,15 @@ class Message {
      * @return Messenger $this
      *     Returns the current instance for method chaining.
      */
-    public function on($message, $callback) {
+    private function _on($message, $callback) {
 
         // Error Handling:
         // Make sure $message is a string and $callback is a callable function.
         if (!is_string($message))
             throw new InvalidArgumentException('First parameter of Messenger::on must be a string.');
+
+        if (!is_callable($callback))
+            throw new InvalidArgumentException('Second parameter of Messenger::on must be callable.');
 
         // Add (or replace) a subscription entry.
         self::$subscriptions[] = (object) array(
@@ -46,12 +49,15 @@ class Message {
      * @return Messenger $this
      *     Returns the current instance for method chaining.
      */
-    public function off($message, $callback = null) {
+    private function _off($message, $callback = null) {
 
         // Error Handling:
         // Make sure $message is a string.
         if (!is_string($message))
-            throw new InvalidArgumentException('Parameter of Messenger::off must be a string.');
+            throw new InvalidArgumentException('First parameter of Messenger::off must be a string.');
+
+        if (!is_null($callback) && !is_callable($callback))
+            throw new InvalidArgumentException('Second parameter of Messenger::off must be callable.');
 
         // Delete entries where the message and (optionally) the callback matches.
         foreach(self::$subscriptions as $key => $subscription) {
@@ -78,7 +84,7 @@ class Message {
      * @return Messenger $this
      *     Returns the current instance for method chaining.
      */
-    public function send($message, $data) {
+    private function _send($message, $data) {
 
         // Error Handling:
         // Make sure $message is a string.
@@ -100,52 +106,24 @@ class Message {
 
         return $this;
     }
-}
 
-class Messenger {
+    /* ===================
+           Magic Methods
+         =================== */
 
     /**
-     * A static version of on()
-     *
-     * @param String $message
-     *    The name of the subscription to add.
-     * @param Closure Object $callback
-     *    A callable function.
-     * @return Messenger
-     *     Returns a new instance of Messenger.
+     * Allows the use of Messenger's methods either through an instance
+     * or statically.
      */
-    public static function on($message, $callback) {
-        $messenger = new Message;
-        return $messenger->on($message, $callback);
+    public function __call($name, $arguments) {
+        if (in_array($name, array('on', 'off', 'send')))
+          return call_user_func_array(array($this, "_$name"), $arguments);
     }
 
-   /**
-    * A static version of off()
-    *
-    * @param String $message
-    *    The name of the subscription to remove.
-    * @param Closure Object $callback
-    *    The (optional) specific function to remove.
-    * @return Messenger
-    *     Returns a new instance of Messenger.
-    */
-   public static function off($message, $callback = null) {
-       $messenger = new Message;
-       return $messenger->off($message, $callback);
-   }
+    public static function __callStatic($name, $arguments) {
+        $messenger = new Messenger;
 
-   /**
-    * A static version of send()
-    *
-    * @param String $message
-    *     The name of the subscription to trigger.
-    * @param $data
-    *     The data to pass to the callback.
-    * @return Messenger
-    *     Returns a new instance of Messenger.
-    */
-   public static function send($message, $data) {
-       $messenger = new Message;
-       return $messenger->send($message, $data);
-   }
+        if (in_array($name, array('on', 'off', 'send')))
+          return call_user_func_array(array($messenger, "_$name"), $arguments);
+    }
 }
