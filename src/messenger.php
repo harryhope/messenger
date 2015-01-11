@@ -2,7 +2,7 @@
 /**
  * messenger.php
  * A straightforward php publish/subscribe library.
- * (c) Harry Hope 2014
+ * (c) Harry Hope 2015
  */
 class Messenger {
 
