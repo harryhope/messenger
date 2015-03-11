@@ -4,6 +4,8 @@
  * A straightforward php publish/subscribe library.
  * (c) Harry Hope 2015
  */
+namespace harryhope\messenger;
+
 class Messenger {
 
     // An array of callable functions.
