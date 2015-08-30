@@ -11,7 +11,7 @@ are sent from other parts of your application.
 To subscribe:
 
 ```php
-Messenger::on('name change', function($name) {
+\Messenger::on('name change', function($name) {
     print 'Hello, ' . $name;
 });
 ```
@@ -22,7 +22,7 @@ $greeting = function($name) {
     print 'How are you today, ' . $name;
 };
 
-Messenger::on('name change', $greeting);
+\Messenger::on('name change', $greeting);
 
 ```
 
@@ -32,22 +32,22 @@ second parameter.
 
 ```php
 // Remove one message + callback pairing
-Messenger::off('name change', $greeting);
+\Messenger::off('name change', $greeting);
 
 // Remove everything with the message 'name change'
-Messenger::off('name change');
+\Messenger::off('name change');
 ```
 
 Use the send method to trigger associated subscriptions.
 
 ```php
-Messenger::send('name change', 'Dave');
+\Messenger::send('name change', 'Dave');
 ```
 
 Messenger also allows for method chaining.
 ```php
-Messenger::on('name change', $change_name)->on('day change', $change_day);
+\Messenger::on('name change', $change_name)->on('day change', $change_day);
 
-Messenger::send('name change', 'Dave')
+\Messenger::send('name change', 'Dave')
          ->send('day change', 'Tuesday');
 ```
